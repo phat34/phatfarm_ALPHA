@@ -1,6 +1,6 @@
 function ClosestWayPointToXYZ( aPos, aMvOpt )
 --[[ by -> Phat34 ]]
-   --nodeAgent = nil
+   nodeAgent = nil
    local closestWP = 100000
    local euDist
    local clCords
@@ -81,10 +81,10 @@ function resurectToon(agent)
       weaponState = 1
       nodeAgent = nil
       NextNode()
-      --if nodeState==false then
-       --  local nm , dist = clwp(nil)
-       --  mv ( nm )
-      --end
+      if nearNode==false then
+         local nm , dist = clwp(nil)
+         mv ( nm )
+      end
    else
       if lenemy == nil then return end
       if check(agent) and check(lenemy) then
@@ -96,7 +96,7 @@ function resurectToon(agent)
             movState = 0
             weaponState = 1
             nodeAgent = nil
-            nodeState = false
+            nearNode = false
             NextNode()
             mv(lmove)
          end
