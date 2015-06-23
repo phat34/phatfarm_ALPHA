@@ -51,7 +51,7 @@ function clwp( aPos, aMvOpt ) --ClosestWayPointToXYZ()
    if aPos == nil then 
       aPos = Client:GetAgentMgr():GetOwnAgent():GetPosition()
    end
-   local currTable = Client:GetPoiMgr():GetWaypoints(Client:GetMapId())
+   local currTable = Client:GetPoiMgr():GetWaypoints()
    for v in currTable do
       if aMvOpt ~= "Dead" and aMvOpt ~= "Next" then 
          euDist = GetEuclideanDistance(aPos, v.pos)
@@ -144,7 +144,7 @@ end
 
 function GetWP()
    debug("Getting Closest WP!")
-   local currTable = Client:GetPoiMgr():GetWaypoints(Client:GetMapId())
+   local currTable = Client:GetPoiMgr():GetWaypoints()
    local wpId
    local count = 0
    local myDist = 100000
@@ -165,10 +165,10 @@ end
 
 
 function NextNode()
---   print("NextNode func()".." Timer ".. tostring(timer)) --"Last Move",lmove)
+   --   print("NextNode func()".." Timer ".. tostring(timer)) --"Last Move",lmove)
    StillInBattle()
    if not timer or battleState == 1 or ((nodeState and (refreshState ~=0 )) == true) then return end
---   print("pass")
+   --   print("pass")
    myPos = agentMgr:GetOwnAgent():GetPosition()
    clnode,dist,nodeAgent = clNodeXYZ()
    --if check(nodeAgent) == false then return end
@@ -181,7 +181,7 @@ function NextNode()
       elseif dist < 6 then
          navMgr:SetTarget(myPos,0,0)
       else
-         navMgr:SetTarget(clnode,1,0)
+         navMgr:SetTarget(clnode,0,0)
       end
    else
       nodeState = false
@@ -310,7 +310,7 @@ function clNodeXYZ( aPos )
 end
 
 function gadgetCollected(ag)
-   print("Gadget Collected ", tostring(nodeAgent))
+   --print("Gadget Collected ", tostring(nodeAgent))
    if nodeAgent == nil or ag == nil then return end
    if check(nodeAgent) and check(ag) then
       if ag == nil or ag:GetAgentId() ~= nodeAgent:GetAgentId() then
@@ -321,10 +321,10 @@ function gadgetCollected(ag)
          print("node depleted. id: " .. ag:GetAgentId())
          nodeAgent = nil
          nodeState = false
-         if nodeState == false then
-            local nm , dist = ncWP()
-            mv ( nm )
-         end
+         --if nodeState == false then
+         local nm , dist = ncWP()
+         mv ( nm )
+         --end
       end
    else
       nodeState = false
@@ -529,7 +529,7 @@ end
 
 function NextWP()
    debug("Function NextWP!")
-   local currTable = Client:GetPoiMgr():GetWaypoints(Client:GetMapId())
+   local currTable = Client:GetPoiMgr():GetWaypoints()
    local NumWps = currTable:size()
    local count = 0
    ReLoop = 0
@@ -601,7 +601,7 @@ function ncWP( aPos )
    if aPos == nil then 
       aPos = Client:GetAgentMgr():GetOwnAgent():GetPosition()
    end
-   local currTable = Client:GetPoiMgr():GetWaypoints(Client:GetMapId())
+   local currTable = Client:GetPoiMgr():GetWaypoints()
    for v in currTable do
       euDist = GetEuclideanDistance(aPos, v.pos)
       if euDist > 1000 and euDist < ncWPDist and Client:GetPoiMgr():IsContested(v.id) ~= true then 
