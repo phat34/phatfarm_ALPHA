@@ -423,6 +423,12 @@ end
 function Refresh()
    Client:GetTimer():RegisterTrigger(Refresh, 15000, 0)
    qm = qm + 1
+   local toonDead = Client:GetAgentMgr():GetOwnAgent():IsDead()
+   if toonDead then
+      print("Toon Died - Rezing")
+      clwp(nil, "Dead")
+      sleep(10)
+   end
    if battleState == 1 then
       if qm >= 4 then
          debug("RF! " .. "nS-" .. tostring(nodeState) .. " rS-" .. refreshState .. " bS-" .. battleState .. " wS-" .. weaponState .. " nA-" .. tostring(nodeAgent) .. " " .. tostring(lmove) .. " " .. tostring(agentMgr:GetOwnAgent():GetPosition()))
@@ -865,13 +871,13 @@ end
 
 function delay1()
    if timer == false then
-      Client:GetTimer():RegisterTrigger(delay2, 100 , 0)
+      Client:GetTimer():RegisterTrigger(delay2, 300 , 0)
    end
 end
 
 function delay2()
    if timer == false then
-      Client:GetTimer():RegisterTrigger(delay1, 100 , 0)
+      Client:GetTimer():RegisterTrigger(delay1, 300 , 0)
    end
 end
 
@@ -885,7 +891,7 @@ end
 
 function pc(cname)
    if cname == nil or cname == "" then
-      cname = "Juldia Chillstreak"
+      cname = "Your Char Name Here"
    end
    Client:PlayCharacter(cname)
 end
